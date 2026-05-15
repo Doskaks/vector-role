@@ -1,5 +1,7 @@
 ---
 galaxy_info:
+  role_name: vector
+  namespace: doskaks
   author: your_name
   description: Install and configure Vector
   license: MIT
@@ -9,9 +11,11 @@ galaxy_info:
       versions:
         - focal
         - jammy
+    - name: OracleLinux
+      versions:
+        - "8"
   galaxy_tags:
     - vector
     - logging
     - observability
-
-dependencies: []
+    
