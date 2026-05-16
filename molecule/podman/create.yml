@@ -1,0 +1,17 @@
+---
+- name: Create
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Create container
+      containers.podman.podman_container:
+        name: ubuntu-22-04
+        image: ubuntu:22.04
+        command: /sbin/init
+        state: started
+        privileged: true
+        tmpfs:
+          - /run
+          - /tmp
+        volume:
+          - /sys/fs/cgroup:/sys/fs/cgroup:rw

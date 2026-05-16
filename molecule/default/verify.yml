@@ -1,0 +1,32 @@
+---
+- name: Verify
+  hosts: all
+  become: true
+  tasks:
+    - name: Check if Vector process is running
+      shell: ps aux | grep vector | grep -v grep
+      register: vector_process
+      ignore_errors: yes
+      
+    - name: Display Vector process
+      debug:
+        msg: "{{ vector_process.stdout_lines }}"
+      
+    - name: Check Vector data directory
+      stat:
+        path: /etc/vector/vector.toml
+      register: vector_config
+      
+    - name: Verify config exists
+      assert:
+        that:
+          - vector_config.stat.exists
+        success_msg: "✓ Vector config file exists"
+        
+    - name: Check Vector binary with whereis
+      command: whereis vector
+      register: vector_whereis
+      
+    - name: Show vector location
+      debug:
+        msg: "Vector paths: {{ vector_whereis.stdout }}"

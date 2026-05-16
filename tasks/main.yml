@@ -23,17 +23,24 @@
     - "{{ vector_install_dir }}"
     - "{{ vector_config_dir }}"
 
-- name: Download Vector install script
-  ansible.builtin.get_url:
-    url: "{{ vector_install_script_url }}"
-    dest: /tmp/install_vector.sh
+- name: Download Vector install script with curl
+  ansible.builtin.shell: |
+    curl -L -o /tmp/install_vector.sh https://sh.vector.dev
+  args:
+    creates: /tmp/install_vector.sh
+
+- name: Make Vector install script executable
+  ansible.builtin.file:
+    path: /tmp/install_vector.sh
     mode: '0755'
 
 - name: Install Vector using official script
   ansible.builtin.shell: |
+    set -o pipefail
     /tmp/install_vector.sh --prefix {{ vector_install_dir }} -y
   args:
     creates: "{{ vector_install_dir }}/bin/vector"
+    executable: /bin/bash
   register: vector_install
   changed_when: vector_install.rc == 0
 

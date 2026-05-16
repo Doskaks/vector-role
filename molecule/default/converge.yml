@@ -1,0 +1,9 @@
+---
+- name: Converge
+  hosts: all
+  become: true
+  vars:
+    clickhouse_host: "localhost"
+    vector_version: "0.34.0"  # Фиксированная версия
+  roles:
+    - role: vector-role

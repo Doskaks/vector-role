@@ -1,0 +1,8 @@
+selinux
+lxml
+molecule
+molecule_podman
+jmespath
+ansible
+ansible-lint
+yamllint

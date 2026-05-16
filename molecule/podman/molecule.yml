@@ -1,0 +1,37 @@
+---
+driver:
+  name: podman
+
+platforms:
+  - name: ubuntu-22-04
+    image: ubuntu:22.04
+    pre_build_image: true
+    privileged: true
+    command: /sbin/init
+    tmpfs:
+      - /run
+      - /tmp
+
+provisioner:
+  name: ansible
+  playbooks:
+    create: create.yml
+    prepare: prepare.yml
+    converge: converge.yml
+    verify: verify.yml
+  inventory:
+    group_vars:
+      all:
+        clickhouse_host: "localhost"
+
+verifier:
+  name: ansible
+
+scenario:
+  name: podman
+  test_sequence:
+    - destroy
+    - create
+    - converge
+    - verify
+    - destroy
